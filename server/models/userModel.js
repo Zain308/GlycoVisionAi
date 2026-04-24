@@ -1,0 +1,24 @@
+import mongoose from "mongoose";
+
+const UserSchema = new mongoose.Schema(
+  {
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    diabetesType: {
+      type: String,
+      enum: ["type1", "type2", "gestational", "caregiver"],
+      required: true,
+    },
+    isAccountVerified: { type: Boolean, default: false },
+    verifyOtp: { type: String, default: "" },
+    verifyOtpExpAt: { type: Number, default: 0 },
+    resetOtp: { type: String, default: "" },
+    resetOtpExpAt: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+
+const UserModel = mongoose.models.user || mongoose.model("user", UserSchema);
+export default UserModel;
