@@ -24,6 +24,22 @@ export const AppContextProvider = ({ children }) => {
         }
     };
 
+    const logout = async () => {
+    try {
+        const { data } = await axiosInstance.post('/api/auth/logout');
+        
+        if (data.success) {
+            setIsLoggedIn(false);
+            setUserData(null);
+            toast.success("Logged out successfully");
+            // Optional: Move to login page automatically
+            window.location.replace('/auth/login'); 
+        }
+    } catch (error) {
+        toast.error(error.message);
+    }
+};
+
     // Run this check once when the app first starts
     useEffect(() => {
         getUserData();
@@ -32,7 +48,8 @@ export const AppContextProvider = ({ children }) => {
     const value = {
         isLoggedIn, setIsLoggedIn,
         userData, setUserData,
-        getUserData
+        getUserData,
+        logout
     };
 
     return (
